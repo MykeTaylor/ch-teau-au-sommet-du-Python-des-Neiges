@@ -1,3 +1,4 @@
+from turtle import *
 ZONE_PLAN_MINI = (-240, -240)  # Coin inférieur gauche de la zone d'affichage du plan
 ZONE_PLAN_MAXI = (50, 200)  # Coin supérieur droit de la zone d'affichage du plan
 POINT_AFFICHAGE_ANNONCES = (-240, 240)  # Point d'origine de l'affichage des annonces
@@ -23,3 +24,4 @@ POSITION_DEPART = (0, 1)  # Porte d'entrée du château
 fichier_plan = 'plan_chateau.txt'
 fichier_questions = 'dico_portes.txt'
 fichier_objets = 'dico_objets.txt'
+
