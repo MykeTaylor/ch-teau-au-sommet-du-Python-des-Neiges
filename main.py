@@ -121,11 +121,11 @@ def deplacer_gauche():
     onkeypress(None, "Left")
     verif_matrice = matrice[position[0]][position[1]-1]  # recupertion de la valeur dans la case a gauche du personnage
     if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)
-        position = (position[0], position[1]-1)
-        position_personage = position_centre_carrer(coordonnees(position, pas))
-        teleport(position_personage[0], position_personage[1])
-        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)
+        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
+        position = (position[0], position[1]-1)  # recupere la case de destination du personnage
+        position_personage = position_centre_carrer(coordonnees(position, pas))  #position turtle du centre de la destination
+        teleport(position_personage[0], position_personage[1])  # positionne le turtle à la destination
+        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE) # redessine le personnage
     onkeypress(deplacer_gauche, "Left")
 
 
@@ -137,9 +137,9 @@ def deplacer_bas():
     global matrice
     global position
     onkeypress(None, "Down")
-    verif_matrice = matrice[position[0]+1][position[1]]  # recupertion de la valeur dans la case a gauche du personnage
+    verif_matrice = matrice[position[0]+1][position[1]]  # recuperation de la valeur dans la case en bas du personnage
     if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)
+        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
         position = (position[0]+1, position[1])
         position_personage = position_centre_carrer(coordonnees(position, pas))
         teleport(position_personage[0], position_personage[1])
@@ -155,9 +155,9 @@ def deplacer_droite():
     global matrice
     global position
     onkeypress(None, "Right")
-    verif_matrice = matrice[position[0]][position[1]+1]  # recupertion de la valeur dans la case a gauche du personnage
+    verif_matrice = matrice[position[0]][position[1]+1]  # recupertion de la valeur dans la case a droite du personnage
     if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)
+        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
         position = (position[0], position[1]+1)
         position_personage = position_centre_carrer(coordonnees(position, pas))
         teleport(position_personage[0], position_personage[1])
@@ -173,9 +173,9 @@ def deplacer_haut():
     global matrice
     global position
     onkeypress(None, "Up")
-    verif_matrice = matrice[position[0]-1][position[1]]  # recupertion de la valeur dans la case a gauche du personnage
+    verif_matrice = matrice[position[0]-1][position[1]]  # recupertion de la valeur dans la case au dessus du personnage
     if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)
+        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
         position = (position[0]-1, position[1])
         position_personage = position_centre_carrer(coordonnees(position, pas))
         teleport(position_personage[0], position_personage[1])
