@@ -70,7 +70,7 @@ def tracer_carre(dimension):
 def tracer_case(case, couleur, pas):
     """
     traçage d'un carrer ayant une couleur bien definit
-    à une position bien defini
+    à une case bien defini
     :param case: couple de coordonné en indice dans la matrice
     contenant le plan
     :param couleur: couleur du du carrer à tracer
@@ -114,81 +114,220 @@ def position_centre_carrer(pos_pixel_turtle):
 def deplacer_gauche():
     """
     deplacer le personnage sur la gauche
-    :return:
     """
     global matrice
-    global position
+    global case
+    global objet_recuperer
+    global dict_objet
+    case_mouvement = (case[0], case[1]-1)  # case situer a gauche (ligne , colonne)
     onkeypress(None, "Left")
-    verif_matrice = matrice[position[0]][position[1]-1]  # recupertion de la valeur dans la case a gauche du personnage
-    if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
-        position = (position[0], position[1]-1)  # recupere la case de destination du personnage
-        position_personage = position_centre_carrer(coordonnees(position, pas))  #position turtle du centre de la destination
-        teleport(position_personage[0], position_personage[1])  # positionne le turtle à la destination
-        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE) # redessine le personnage
+    verif_matrice = matrice[case[0]][case[1]-1]  # recupertion de la valeur dans la case a gauche du personnage
+    if verif_matrice in [0, 2, 4]:  # verification de  cette valeur
+        tracer_case(case, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
+        case = case_mouvement  # recupere la case de destination du personnage
+        position_personage = position_centre_carrer(coordonnees(case, pas))  # coordonne turtle du centre du carrer
+        teleport(position_personage[0], position_personage[1])  # positionne le turtle au centre du carrer
+        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)     # redessine le personnage
+        if verif_matrice == 4:
+            ramasser_objet(matrice, case, objet_recuperer, dict_objet)
+    elif verif_matrice == 3:
+        case = poser_question(matrice, case, case_mouvement)
+        position_personage = position_centre_carrer(coordonnees(case, pas))  # coordonne du centre du carrer
+        teleport(position_personage[0], position_personage[1])  # positionne le turtle au centre du carrer
+        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)  # redessine le personnage
     onkeypress(deplacer_gauche, "Left")
 
 
 def deplacer_bas():
     """
     deplacer le personnage sur la case en dessous
-    :return:
     """
     global matrice
-    global position
+    global case
+    global objet_recuperer
+    global dict_objet
+    case_mouvement = (case[0]+1, case[1])
     onkeypress(None, "Down")
-    verif_matrice = matrice[position[0]+1][position[1]]  # recuperation de la valeur dans la case en bas du personnage
-    if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
-        position = (position[0]+1, position[1])
-        position_personage = position_centre_carrer(coordonnees(position, pas))
+    verif_matrice = matrice[case[0]+1][case[1]]  # recuperation de la valeur dans la case en bas du personnage
+    if verif_matrice in [0, 2, 4]:  # verification de  cette valeur
+        tracer_case(case, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
+        case = case_mouvement
+        position_personage = position_centre_carrer(coordonnees(case, pas))
         teleport(position_personage[0], position_personage[1])
         dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)
+        if verif_matrice == 4:
+            ramasser_objet(matrice, case, objet_recuperer, dict_objet)
+    elif verif_matrice == 3:
+        case = poser_question(matrice, case, case_mouvement)
+        position_personage = position_centre_carrer(coordonnees(case, pas))  # coordonne du centre du carrer
+        teleport(position_personage[0], position_personage[1])  # positionne le turtle au centre du carrer
+        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)  # redessine le personnage
     onkeypress(deplacer_bas, "Down")
 
 
 def deplacer_droite():
     """
     deplacer le personnage sur la case à droite
-    :return:
+
     """
     global matrice
-    global position
+    global case
+    global objet_recuperer
+    global dict_objet
+    case_mouvement = case[0], case[1]+1
     onkeypress(None, "Right")
-    verif_matrice = matrice[position[0]][position[1]+1]  # recupertion de la valeur dans la case a droite du personnage
-    if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
-        position = (position[0], position[1]+1)
-        position_personage = position_centre_carrer(coordonnees(position, pas))
+    verif_matrice = matrice[case[0]][case[1]+1]  # recupertion de la valeur dans la case a droite du personnage
+    if verif_matrice in [0, 2, 4]:  # verification de  cette valeur
+        tracer_case(case, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
+        case = case_mouvement
+        position_personage = position_centre_carrer(coordonnees(case, pas))
         teleport(position_personage[0], position_personage[1])
         dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)
+        if verif_matrice == 4:
+            ramasser_objet(matrice, case, objet_recuperer, dict_objet)
+    elif verif_matrice == 3:
+        case = poser_question(matrice, case, case_mouvement)
+        position_personage = position_centre_carrer(coordonnees(case, pas))  # coordonne du centre du carrer
+        teleport(position_personage[0], position_personage[1])  # positionne le turtle au centre du carrer
+        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)  # redessine le personnage
     onkeypress(deplacer_droite, "Right")
 
 
 def deplacer_haut():
     """
     deplacer le personnage sur la case au dessus
-    :return:
     """
     global matrice
-    global position
+    global case
+    global objet_recuperer
+    global dict_objet
+    case_mouvement = (case[0]-1, case[1])
     onkeypress(None, "Up")
-    verif_matrice = matrice[position[0]-1][position[1]]  # recupertion de la valeur dans la case au dessus du personnage
-    if verif_matrice in [0, 2, 4]:  # verifi si cette valeur
-        tracer_case(position, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
-        position = (position[0]-1, position[1])
-        position_personage = position_centre_carrer(coordonnees(position, pas))
+    verif_matrice = matrice[case[0]-1][case[1]]  # recupertion de la valeur dans la case au dessus du personnage
+    if verif_matrice in [0, 2, 4]:  # verification de  cette valeur
+        tracer_case(case, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
+        case = case_mouvement
+        position_personage = position_centre_carrer(coordonnees(case, pas))
         teleport(position_personage[0], position_personage[1])
         dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)
+        if verif_matrice == 4:
+            ramasser_objet(matrice, case, objet_recuperer, dict_objet)
+    elif verif_matrice == 3:
+        case = poser_question(matrice, case, case_mouvement)
+        position_personage = position_centre_carrer(coordonnees(case, pas))  # coordonne du centre du carrer
+        teleport(position_personage[0], position_personage[1])  # positionne le turtle au centre du carrer
+        dot((calculer_pas(matrice) * RATIO_PERSONNAGE), COULEUR_PERSONNAGE)  # redessine le personnage
     onkeypress(deplacer_haut, "Up")
 
 
-ht()    # rendre la turtle invisible
+def creer_dictionnaire_des_objets(fichier_des_objets):
+    """
+    lecture du fichier contenant la listes des objet et leur emplacement
+    :param fichier_des_objets: fichiers contenant la liste des objets
+    :return: retourne la liste des objets dans un dictionnaire
+    """
+    dict_objet = {}    # initialisation du dictionnaire à retourner
+    with open(fichier_des_objets, 'r', encoding='utf-8') as objets:
+        liste_objet = objets.read().split('\n')  # stochage de la liste des objets dans une variable
+        for objet in liste_objet:
+            indice, valeur = eval(objet)  # recuperation de l'indice et de la valeur de l'objet
+            dict_objet[indice] = valeur  # ajout de lobjet dans le dictionnaire
+    return dict_objet
+
+
+def trace_rectangle():
+    """
+    trace un rectangle afin d'effacer une annonce
+    :return:
+    """
+    begin_fill()
+    color("white", "white")
+    for i in range(2):  # trace un retangle afin de cacher le message precedent
+        fd(600)
+        for j in range(1):
+            left(90)
+            fd(25)
+            left(90)
+    end_fill()
+
+
+def ramasser_objet(matrice, case, objet_recuperer, dit_objet):
+    """
+    affichage de l'inventaire et modification d'une
+    valeur dans la matrice contenant le plan
+    :param matrice: liste conte nant le plan
+    :param case: (ligne et colonne ) oou se trouve le turtle
+    :param objet_recuperer: liste contenant les objets deja recuperer par le joueur
+    :param dit_objet: liste conteant tout les objets a recupere
+    """
+    global POINT_AFFICHAGE_INVENTAIRE
+    matrice[case[0]][case[1]] = 0   # modifi la valeur dans la matrice
+    objet_recuperer.append(dit_objet[(case[0], case[1])])  # ajout de l'objet a l'inventaire
+    num_objet = len(objet_recuperer)
+    teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])  # positionne le turtle au coordonne des anonces
+    trace_rectangle()
+    color("black")
+    teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])
+    anonce = "Vous avez trouvé un objet : " + dit_objet[(case[0], case[1])]
+    write(anonce, False, font=('Arial', 10, 'normal'))  # ecrit la nouvelle anonce
+    color("black")
+    message_inventaire = "N°" + str(num_objet) + " " + objet_recuperer[num_objet-1]  # message ajouté dans linventaire
+    teleport(POINT_AFFICHAGE_INVENTAIRE[0], POINT_AFFICHAGE_INVENTAIRE[1] - 20)   # turtle au coordonne de l'inventaire
+    write(message_inventaire, False, font=('Arial', 10, 'normal'))   # affiche le nouveau objet
+    POINT_AFFICHAGE_INVENTAIRE = (POINT_AFFICHAGE_INVENTAIRE[0], POINT_AFFICHAGE_INVENTAIRE[1] - 20)
+
+
+def poser_question(matrice, case, mouvement):
+    """
+    afficher dans le bandeau d’annonces Cette porte est fermée.,
+    poser au joueur la question correspondant à l’emplacement de la porte et saisir sa réponse,
+    si la réponse est bonne, remplacer la porte par une case vide,
+    afficher dans le bandeau d’annonce que la porte s’ouvre, et avancer le personnage,
+    si la réponse est mauvaise, l'annoncer et ne pas déplacer le personnage.
+    :param matrice: liste contenant le plan
+    :param case: coordonne actuel du personnage (ligne , colonne)
+    :param mouvement: deplacement souhaité par l'utilisateur (ligne , colonne)
+    :return: la position de la (ligne, colonne)
+    """
+    global dict_porte
+    teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])  # positionne le turtle au coordonne des anonces
+    trace_rectangle()   # trace un rectangle et le rempli en blanc pour effacer l'annonce precedente
+    color("black")  # redonne la couleur noir a le turtle
+    write("porte fermer", False, font=('Arial', 10, 'normal'))  # ecrit la nouvelle anonce
+    question = dict_porte[mouvement[0], mouvement[1]][0]   # recupere l'enigme dans le turple stocker dans dictionnaire
+    reponse = dict_porte[mouvement[0], mouvement[1]][1]  # recupere la reponse dans le turple stocker dans dictionnaire
+    reponse_joueur = textinput("Enigme", question)  # afiiche la question au joueur et recupere ca reponse
+    listen()
+    teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])
+    trace_rectangle()
+    color("black")
+    if reponse_joueur == reponse:   # verifie si la reponse du joueur est correct
+        teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])
+        write("porte ouverte !", False, font=('Arial', 10, 'normal'))  # ecrit la nouvelle anonce
+        tracer_case(case, (COULEURS[0], COULEURS[5]), pas)  # retrace le carrer et efface le personnage
+        case = mouvement
+        matrice[case[0]][case[1]] = 0
+    else:
+        teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])
+        write("reponse fausse porte fermer !", False, font=('Arial', 10, 'normal'))  # ecrit la nouvelle anonce
+        case = case
+    return case
+
+
+ht()  # rendre la turtle invisible
+speed(0)
 matrice = lire_matrice(fichier_plan)  # recuperation de la matrice
+teleport(POINT_AFFICHAGE_INVENTAIRE[0], POINT_AFFICHAGE_INVENTAIRE[1])  # posionne turtle  au coordonné de l'inventaire
+write("Inventaire :", False, font=('Arial', 12, 'normal'))  # ecrit "Inventaite"
+teleport(POINT_AFFICHAGE_ANNONCES[0], POINT_AFFICHAGE_ANNONCES[1])  # posionne turtle  au coordonné des anonces
+write("Anonce :", False, font=('Arial', 10, 'normal'))
+objet_recuperer = []  # initialisation de lensemble contenant l'inventaire objets ramassés
+dict_objet = creer_dictionnaire_des_objets("dico_objets.txt")  # dictionnaire contenant la listes des objets à recuperer
+dict_porte = creer_dictionnaire_des_objets("dico_portes.txt")
 afficher_plan(matrice)  # appel de la fonction pour affichage du plan
 pas = calculer_pas(matrice)  # recuperation du pas (dimenssion)
-position = POSITION_DEPART  # cases de depart du personnage
-depart_pixel_turtle = position_centre_carrer(coordonnees(position, pas))   # position de depart en pixel turtle du joueur
+case = POSITION_DEPART  # cases de depart du personnage
+depart_pixel_turtle = position_centre_carrer(coordonnees(case, pas))   # de depart en pixel turtle du joueur
 teleport(depart_pixel_turtle[0], depart_pixel_turtle[1])
 dot((calculer_pas(matrice)*RATIO_PERSONNAGE), COULEUR_PERSONNAGE)
 listen()
